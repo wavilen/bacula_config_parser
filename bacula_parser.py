@@ -32,20 +32,20 @@ def baculaParser(dir_config_file):
     )
 
     baculaObject = Forward()
-    baculaDef = Forward()
     baculaSec = Forward()
+    baculaDef = Forward()
 
-    incSecParse = lambda t: baculaSec.parseString(remove_comment(t[0]))
+    incDefParse = lambda t: baculaDef.parseString(remove_comment(t[0]))
     incObjParse = lambda t: baculaObject.parseString(remove_comment(t[0]))
 
-    incSec = (Literal('@').suppress() + restOfLine).setParseAction(incSecParse)
+    incDef = (Literal('@').suppress() + restOfLine).setParseAction(incDefParse)
     incObj = (Literal('@').suppress() + restOfLine).setParseAction(incObjParse)
 
-    baculaSec << Dict(ZeroOrMore(
-        Group(incSec | baculaDef | setList)
+    baculaDef << Dict(ZeroOrMore(
+        incDef | Group(baculaSec | setList)
     ))
-    baculaDef << SecName + LBRACE + Optional(baculaSec) + RBRACE
-    baculaObject << Dict(ZeroOrMore(Group(baculaDef) | incObj))
+    baculaSec << SecName + LBRACE + Optional(baculaDef) + RBRACE
+    baculaObject << Dict(ZeroOrMore(Group(baculaSec) | incObj))
 
     return baculaObject.parseString(remove_comment(dir_config_file))
 

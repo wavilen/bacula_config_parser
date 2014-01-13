@@ -1,0 +1,10 @@
+Options {
+  signature = MD5
+}
+File = /etc
+File = /opt
+File = /var/www
+File = /root
+File = /home
+File = /usr/local
+File = /tmp/Package.list
