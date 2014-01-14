@@ -1,5 +1,9 @@
+IDEAS
+=====
+
+* Support "@|" syntax as optional parameter because is unsafe imho.
+
 BUGS
 ====
 
-* Incorrect result for "Catalog" section.
 * Don't support ”@|” syntax.
