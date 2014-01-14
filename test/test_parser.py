@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 import unittest
+from unittest import expectedFailure
 import sys
 import os.path
 sys.path.append(
@@ -12,9 +13,7 @@ class Test(unittest.TestCase):
     maxDiff = 2000
 
     def test_remove_comment(self):
-        check_str = '''Job {
-}
-'''
+        check_str = 'Job {\n}\n'
         self.assertMultiLineEqual(remove_comment('comment.conf'), check_str)
 
     def test_one_section(self):
@@ -83,6 +82,25 @@ class Test(unittest.TestCase):
             baculaParser('include_config.conf').asList(),
             check_list
         )
+
+    @expectedFailure
+    def test_pipe_include(self):
+        check_list = []
+        self.assertListEqual(
+            baculaParser('pipe_include.conf').asList(),
+            check_list
+        )
+
+    def test_oneline_syntax(self):
+        check_list = [['Include',
+                       ['Options', ['signature', 'MD5'], ['sparse', 'yes']],
+                       ['File', '/dev/hd6']]]
+
+        self.assertListEqual(
+            baculaParser('oneline_syntax.conf').asList(),
+            check_list
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

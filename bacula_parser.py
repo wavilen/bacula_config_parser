@@ -25,11 +25,11 @@ def baculaParser(dir_config_file):
 
     SecName = Word(alphanums)
 
-    rsym = re.compile('[={}]')
+    rsym = re.compile('[={};]')
     setList = delimitedList(
         Word(rsym.sub('', printables) + ' ').setParseAction(strip),
         delim='='
-    )
+    ) + Optional(Literal(';').suppress())
 
     baculaObject = Forward()
     baculaSec = Forward()
